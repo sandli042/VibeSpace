@@ -1,0 +1,5 @@
+//To Install Packages //
+npm install socket.io
+
+//To start server and Run Page//
+node server.js

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VibeSpace</title>
+  <style>
+    body.light-mode {
+      --bg: #f7f6ff;
+      --panel: rgba(255,255,255,0.96);
+      --line: rgba(0,0,0,0.08);
+      --text: #2a183a;
+      --muted: #7a6a9a;
+      --brand: #a259ff;
+      --brand2: #6c47ff;
+      --warn: #ffb84d;
+      --ok: #1bbf7a;
+      --bad: #ff6f7d;
+      --r: 20px;
+      --shadow: 0 24px 60px rgba(80,0,120,.10);
+      background: radial-gradient(circle at top left,rgba(162,89,255,.13),transparent 28%),radial-gradient(circle at top right,rgba(255,184,77,.10),transparent 24%),linear-gradient(180deg,#f7f6ff 0%,#e9e3fa 48%,#e3e6f6 100%) !important;
+      color: var(--text) !important;
+    }
+    .mode-toggle {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 1000;
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: background 0.2s, color 0.2s;
+    }
+  </style>
+  <style>
+    :root{--bg:#1a102a;--panel:rgba(34,21,54,.92);--line:rgba(255,255,255,.09);--text:#eef3ff;--muted:#bca9e9;--brand:#a259ff;--brand2:#6c47ff;--warn:#ffb84d;--ok:#a259ff;--bad:#ff6f7d;--r:20px;--shadow:0 24px 60px rgba(80,0,120,.35)}
+  *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(162,89,255,.18),transparent 28%),radial-gradient(circle at top right,rgba(255,184,77,.14),transparent 24%),linear-gradient(180deg,#1a102a 0%,#2d1a47 48%,#1a102a 100%)}
+    .landing-wrap,.shell{width:min(1440px,calc(100% - 28px));margin:14px auto}.shell{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,1fr);gap:16px;align-items:start}.col{display:grid;gap:16px;min-width:0}.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);backdrop-filter:blur(18px)}
+    .hero,.pad{padding:18px}.eyebrow{text-transform:uppercase;letter-spacing:.18em;font-size:11px;color:var(--brand);margin-bottom:8px}h1,h2,p,h3{margin:0}h1{font-size:clamp(28px,4vw,42px);line-height:1.05;max-width:11ch}.sub{margin-top:10px;max-width:70ch;color:var(--muted);line-height:1.6}
+    .landing{padding:28px;display:grid;grid-template-columns:1.25fr .95fr;gap:18px;align-items:stretch}.landing-copy{display:grid;align-content:center;gap:16px}.landing-copy h1{max-width:12ch;font-size:clamp(38px,6vw,68px)}.cta-row,.camera-actions{display:flex;gap:10px;flex-wrap:wrap}.ghost-link{display:inline-flex;align-items:center;justify-content:center;padding:14px 16px;border-radius:14px;text-decoration:none;font-weight:800;background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.08)}.feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.feature-card{padding:16px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}.feature-card strong{display:block;margin-bottom:8px;font-size:15px}.feature-card p{color:var(--muted);line-height:1.5}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.pill{padding:10px 14px;border-radius:999px;font-size:13px;font-weight:700;background:rgba(89,212,255,.12);color:var(--brand);border:1px solid rgba(89,212,255,.22)}
+    .join,.toolbar,.metrics,.queue-form,.chat-form{display:grid;gap:10px}.join{grid-template-columns:repeat(3,minmax(0,1fr)) auto auto;margin-top:16px}.toolbar{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:14px}.metrics{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px}.queue-form,.chat-form{grid-template-columns:1fr auto}
+    input,button{border:0;outline:none;border-radius:14px;font:inherit}input{width:100%;padding:14px 16px;background:rgba(255,255,255,.05);color:var(--text);border:1px solid rgba(255,255,255,.08)}input::placeholder{color:#8290af}button{cursor:pointer;transition:transform .16s ease,opacity .16s ease}button:hover{transform:translateY(-1px)}button:disabled{cursor:not-allowed;opacity:.5;transform:none}
+    .primary,.secondary,.danger{padding:14px 16px;font-weight:800}.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#071421}.secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.08)}.danger{background:rgba(255,111,125,.14);color:#ffd8dd;border:1px solid rgba(255,111,125,.22)}
+    .media-shell{position:relative;width:100%;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.015)),#050913;border:1px solid rgba(255,255,255,.08)}#youtubePlayer,#mp4Player,.empty{position:absolute;inset:0;width:100%;height:100%}#youtubePlayer,#mp4Player{display:none;background:#000}#mp4Player{object-fit:contain}.empty{display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;color:var(--muted);line-height:1.6}.hidden{display:none!important}
+    .meta{margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.title{font-size:18px;font-weight:800}.note{margin-top:4px;color:var(--muted);font-size:14px}
+    .metric,.card,.bubble,.tile{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}.metric-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}.metric-value{margin-top:8px;font-size:20px;font-weight:800}
+    .head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}.head p{color:var(--muted);font-size:14px}.list,.feed{display:grid;gap:10px;max-height:340px;overflow:auto;padding-right:4px}.feed{min-height:320px}.card strong{display:block;margin-bottom:4px}.line{color:var(--muted);font-size:13px;line-height:1.45}
+    .bubble.system{border-style:dashed;color:#d2dbf0}.bubble-head{display:flex;justify-content:space-between;gap:12px;margin-bottom:6px;color:var(--muted);font-size:12px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.tile{position:relative;min-height:140px;overflow:hidden;padding:0;background:#04070f}.tile video{width:100%;height:100%;object-fit:contain;object-position:center top;background:#04070f}.tag{position:absolute;left:10px;right:10px;bottom:10px;padding:8px 10px;border-radius:999px;background:rgba(3,8,18,.74);font-size:12px;display:flex;justify-content:space-between;gap:8px}
+    .hint{color:var(--muted);font-size:13px;line-height:1.5}
+    body.focus-mode #appShell{grid-template-columns:minmax(0,8fr) minmax(280px,2fr);grid-template-areas:"hero hero" "media lounge" "media chat";align-items:start}
+    body.focus-mode #appShell>.col{display:contents}
+    body.focus-mode #roomHero{grid-area:hero}
+    body.focus-mode #mediaStage{grid-area:media}
+    body.focus-mode #videoLounge{grid-area:lounge;align-self:stretch}
+    body.focus-mode #chatPanel{grid-area:chat;display:block}
+    body.focus-mode #queuePanel,body.focus-mode .landing-wrap{display:none}
+    body.focus-mode #videoLounge .grid{grid-template-columns:1fr}
+    body.focus-mode #videoLounge .tile{min-height:120px}
+    @media (max-width:1260px){.shell{grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr)}body.focus-mode #appShell{grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr)}}
+    @media (max-width:1120px){.landing,.shell{grid-template-columns:1fr}body.focus-mode #appShell{grid-template-columns:1fr;grid-template-areas:"hero" "media" "lounge" "chat"}}
+    @media (max-width:760px){.join,.toolbar,.metrics,.queue-form,.chat-form,.feature-grid{grid-template-columns:1fr}.landing-wrap,.shell{width:min(100% - 16px,1440px);margin:8px auto 16px}.landing{padding:20px}.panel{border-radius:18px}.hero,.pad{padding:16px}.feed{min-height:240px}.list,.feed{max-height:280px}.tile{min-height:120px}.tag{left:8px;right:8px;bottom:8px;font-size:11px}}
+    @media (max-width:560px){.top,.meta,.camera-actions,.cta-row{align-items:stretch}.pill,.ghost-link,button{width:100%}.toolbar button,.camera-actions button{width:100%}.media-shell{aspect-ratio:4/3}.tile{min-height:100px}}
+  </style>
+</head>
+<body>
+  <button class="mode-toggle" id="modeToggle" aria-label="Toggle dark/light mode">🌙 Dark Mode</button>
+  <section class="landing-wrap">
+    <div class="panel landing">
+      <div class="landing-copy">
+        <div class="eyebrow">VibeSpace Landing</div>
+        <h1>Start a watch party that actually stays together.</h1>
+        <p class="sub">Share one synchronized player, live chat in the same room, and bring cameras in when the moment needs reactions. Built for quick links, small groups, and lightweight hosting.</p>
+        <div class="cta-row">
+          <a class="ghost-link" href="#appShell">Open Room Controls</a>
+          <a class="ghost-link" href="#videoLounge">Jump To Cameras</a>
+        </div>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card"><strong>Shared Playback</strong><p>YouTube and direct video links stay aligned with host controls and drift correction.</p></div>
+        <div class="feature-card"><strong>Quick Rooms</strong><p>Join by room ID, refresh safely, and keep in-memory chat and queue state available during reconnects.</p></div>
+        <div class="feature-card"><strong>Live Reactions</strong><p>Turn your camera on only when you want to be seen, while still being able to watch everyone else.</p></div>
+        <div class="feature-card"><strong>Low Setup</strong><p>No database, no account wall, and no heavy meeting flow before people can hang out.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="appShell" class="shell">
+    <div class="col">
+      <section id="roomHero" class="panel hero">
+        <div class="top">
+          <div>
+            <div class="eyebrow">Your Room</div>
+            <h1>Watch, listen, and react together.</h1>
+            <p class="sub">VibeSpace synchronizes a shared YouTube or MP4 player, gives one host authoritative control, includes live chat, and layers in browser video calling using WebRTC signaling over Socket.io.</p>
+          </div>
+          <div id="connectionBadge" class="pill">Disconnected</div>
+        </div>
+        <div class="join">
+          <input id="roomInput" type="text" placeholder="Room ID" maxlength="32" />
+          <input id="nameInput" type="text" placeholder="Your name" maxlength="80" />
+          <input id="videoNameInput" type="text" placeholder="Video tile name" maxlength="80" />
+          <button id="joinBtn" class="primary">Join Room</button>
+          <button id="shareRoomBtn" class="secondary">Share Link</button>
+        </div>
+      </section>
+
+      <section id="mediaStage" class="panel pad">
+        <div class="media-shell">
+          <div id="youtubePlayer"></div>
+          <video id="mp4Player" playsinline controls></video>
+          <div id="mediaEmpty" class="empty"><div><h2>Queue media to begin</h2><p class="sub">Paste a YouTube link or direct MP4/WebM/Ogg URL in the queue panel.</p></div></div>
+        </div>
+        <div class="meta">
+          <div>
+            <div id="mediaTitle" class="title">No media loaded</div>
+            <div id="mediaNote" class="note">The host controls play, pause, seek, and skip.</div>
+          </div>
+          <div id="hostBadge" class="pill">No host assigned</div>
+        </div>
+        <div class="toolbar">
+          <button id="playBtn" class="primary">Play</button>
+          <button id="pauseBtn" class="secondary">Pause</button>
+          <button id="seekBackBtn" class="secondary">-10s</button>
+          <button id="skipBtn" class="danger">Next in Queue</button>
+          <button id="focusViewBtn" class="secondary">Focus View</button>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">Sync Drift</div><div id="driftValue" class="metric-value">0 ms</div></div>
+          <div class="metric"><div class="metric-label">Role</div><div id="roleValue" class="metric-value">Viewer</div></div>
+          <div class="metric"><div class="metric-label">Participants</div><div id="participantCount" class="metric-value">0</div></div>
+        </div>
+      </section>
+
+      <section id="videoLounge" class="panel pad">
+        <div class="head">
+          <div><h2>Video Lounge</h2><p>WebRTC peer mesh for small rooms. No database required.</p></div>
+          <div class="camera-actions">
+            <button id="cameraBtn" class="secondary">Enable Camera</button>
+            <button id="cameraOffBtn" class="danger" disabled>Camera Off</button>
+          </div>
+        </div>
+        <div id="participantGrid" class="grid"></div>
+        <p class="hint">This uses browser-to-browser media for simplicity. For large rooms, swap the mesh for an SFU.</p>
+      </section>
+    </div>
+
+    <div class="col">
+      <section id="queuePanel" class="panel pad">
+        <div class="head"><div><h2>Media Queue</h2><p>Anyone can enqueue. The host decides what plays next.</p></div></div>
+        <div class="queue-form">
+          <input id="mediaUrlInput" type="text" placeholder="YouTube or direct MP4 URL" />
+          <button id="addQueueBtn" class="primary">Add</button>
+        </div>
+        <div id="queueList" class="list"></div>
+      </section>
+
+      <section id="chatPanel" class="panel pad">
+        <div class="head"><div><h2>Live Chat</h2><p>Messages live in memory and reset when the server restarts.</p></div></div>
+        <div class="feed" id="chatFeed"></div>
+        <div class="chat-form">
+          <input id="chatInput" type="text" placeholder="Send a message" maxlength="300" />
+          <button id="chatBtn" class="primary">Send</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    // Dark/Light mode toggle logic
+    const modeToggle = document.getElementById('modeToggle');
+    function setMode(mode) {
+      if (mode === 'light') {
+        document.body.classList.add('light-mode');
+        modeToggle.textContent = '🌙 Dark Mode';
+        localStorage.setItem('theme-mode', 'light');
+      } else {
+        document.body.classList.remove('light-mode');
+        modeToggle.textContent = '☀️ Light Mode';
+        localStorage.setItem('theme-mode', 'dark');
+      }
+    }
+    modeToggle.addEventListener('click', () => {
+      const isLight = document.body.classList.contains('light-mode');
+      setMode(isLight ? 'dark' : 'light');
+    });
+    // On load, set mode from localStorage or system preference
+    (function() {
+      const saved = localStorage.getItem('theme-mode');
+      if (saved === 'light') setMode('light');
+      else if (saved === 'dark') setMode('dark');
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) setMode('light');
+      else setMode('dark');
+    })();
+    const SESSION_KEY='VibeSpace-session';
+    const state={socket:null,selfSocketId:null,roomId:'',userName:'',videoDisplayName:'',room:null,isHost:false,currentItem:null,activePlayerType:null,youtubeReady:false,youtubePlayer:null,youtubePlayerReady:false,youtubePlayerReadyPromise:null,suppressLocalSyncEvents:false,lastAppliedActionId:null,syncHeartbeatInterval:null,driftCheckInterval:null,localStream:null,peerConnections:new Map(),remoteStreams:new Map(),participantNames:new Map(),lastKnownDriftMs:0,audioContext:null,joinInFlight:false,mediaIssue:'',focusMode:false};
+    const els={connectionBadge:document.getElementById('connectionBadge'),roomInput:document.getElementById('roomInput'),nameInput:document.getElementById('nameInput'),videoNameInput:document.getElementById('videoNameInput'),joinBtn:document.getElementById('joinBtn'),shareRoomBtn:document.getElementById('shareRoomBtn'),youtubePlayer:document.getElementById('youtubePlayer'),mp4Player:document.getElementById('mp4Player'),mediaEmpty:document.getElementById('mediaEmpty'),mediaTitle:document.getElementById('mediaTitle'),mediaNote:document.getElementById('mediaNote'),hostBadge:document.getElementById('hostBadge'),playBtn:document.getElementById('playBtn'),pauseBtn:document.getElementById('pauseBtn'),seekBackBtn:document.getElementById('seekBackBtn'),skipBtn:document.getElementById('skipBtn'),focusViewBtn:document.getElementById('focusViewBtn'),driftValue:document.getElementById('driftValue'),roleValue:document.getElementById('roleValue'),participantCount:document.getElementById('participantCount'),mediaUrlInput:document.getElementById('mediaUrlInput'),addQueueBtn:document.getElementById('addQueueBtn'),queueList:document.getElementById('queueList'),chatFeed:document.getElementById('chatFeed'),chatInput:document.getElementById('chatInput'),chatBtn:document.getElementById('chatBtn'),cameraBtn:document.getElementById('cameraBtn'),cameraOffBtn:document.getElementById('cameraOffBtn'),participantGrid:document.getElementById('participantGrid')};
+    const rtcConfig={iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}]};
+    const now=()=>Date.now();
+    const actionId=(p)=>p+'_'+now()+'_'+Math.random().toString(36).slice(2,9);
+    const esc=(v)=>String(v).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#39;");
+    const roomFromUrl=()=>{const p=new URLSearchParams(location.search);return (p.get('room')||'lobby').replace(/[^a-zA-Z0-9-_]/g,'').slice(0,32)||'lobby'};
+    const setRoomUrl=(roomId)=>{const u=new URL(location.href);u.searchParams.set('room',roomId);history.replaceState({},'',u)};
+    function readSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')||{}}catch(_){return{}}}
+    function writeSession(session){try{localStorage.setItem(SESSION_KEY,JSON.stringify(session))}catch(_){}}
+    function roomDraft(){return (els.roomInput.value||roomFromUrl()).trim().replace(/[^a-zA-Z0-9-_]/g,'').slice(0,32)||'lobby'}
+    function userDraft(){return (els.nameInput.value||'Guest').trim().slice(0,80)||'Guest'}
+    function videoDraft(userName){return (els.videoNameInput.value||userName).trim().slice(0,80)||userName}
+    function roomLink(roomId){const u=new URL(location.href);u.searchParams.set('room',roomId||roomDraft());return u.toString()}
+    function restoreSession(){const saved=readSession();els.roomInput.value=saved.roomId||roomFromUrl();els.nameInput.value=saved.userName||'';els.videoNameInput.value=saved.videoDisplayName||saved.userName||''}
+    function persistSession(roomId,userName,videoDisplayName){writeSession({roomId,userName,videoDisplayName})}
+    async function joinRoom(){if(!state.socket?.connected||state.joinInFlight)return;await ensureAudioReady();const roomId=roomDraft();const userName=userDraft();const videoName=videoDraft(userName);state.joinInFlight=true;state.roomId=roomId;state.userName=userName;state.videoDisplayName=videoName;persistSession(roomId,userName,videoName);setRoomUrl(roomId);state.socket.emit('room:join',{roomId,userName},(res)=>{state.joinInFlight=false;if(!res?.ok){badge('Unable to join room','default');alert(res?.error||'Failed to join room.');return}state.selfSocketId=res.selfSocketId;syncRoom(res.room);renderChat(res.room.chat||[]);badge('Connected to '+roomId,'ok')})}
+    async function shareRoom(){const link=roomLink(state.roomId||roomDraft());try{if(navigator.share){await navigator.share({title:'VibeSpace',text:'Join my VibeSpace',url:link});badge('Room link shared','ok');return}if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(link);badge('Room link copied','ok');return}prompt('Copy this room link:',link)}catch(e){if(e?.name!=='AbortError'){console.error('Unable to share room link.',e);prompt('Copy this room link:',link)}}}
+    function badge(text,kind){els.connectionBadge.textContent=text;els.connectionBadge.style.color=kind==='ok'?'var(--ok)':kind==='warn'?'var(--warn)':'var(--brand)';els.connectionBadge.style.background=kind==='ok'?'rgba(89,240,176,.12)':kind==='warn'?'rgba(255,184,77,.12)':'rgba(89,212,255,.12)'}
+    function hostName(){if(!state.room?.hostSocketId)return'';return state.room.users.find((u)=>u.socketId===state.room.hostSocketId)?.name||''}
+    function updateRole(){els.roleValue.textContent=state.isHost?'Host':'Viewer';els.hostBadge.textContent=state.isHost?'You are the host':'Host: '+(hostName()||'Pending');const off=!state.isHost||!state.currentItem;els.playBtn.disabled=off;els.pauseBtn.disabled=off;els.seekBackBtn.disabled=off;els.skipBtn.disabled=!state.isHost}
+    function updateCounts(){els.participantCount.textContent=String((state.room?.users||[]).length)}
+    function updateCameraButtons(){els.cameraBtn.textContent=state.localStream?'Camera On':'Enable Camera';els.cameraOffBtn.disabled=!state.localStream}
+    function updateFocusMode(){document.body.classList.toggle('focus-mode',state.focusMode);els.focusViewBtn.textContent=state.focusMode?'Exit Focus View':'Focus View'}
+    function updateMeta(){if(!state.currentItem){els.mediaTitle.textContent='No media loaded';els.mediaNote.textContent='The host controls play, pause, seek, and skip.';return}els.mediaTitle.textContent=state.currentItem.title;els.mediaNote.textContent=state.mediaIssue||'Synchronized with host commands and periodic drift correction heartbeats.'}
+    function setPlayer(type){state.activePlayerType=type;els.youtubePlayer.style.display=type==='youtube'?'block':'none';els.mp4Player.style.display=type==='mp4'?'block':'none';els.mediaEmpty.classList.toggle('hidden',!!type)}
+    function getPos(){if(!state.currentItem)return 0;if(state.activePlayerType==='mp4')return Math.round((els.mp4Player.currentTime||0)*1000);if(state.activePlayerType==='youtube'&&state.youtubePlayer?.getCurrentTime)return Math.round((state.youtubePlayer.getCurrentTime()||0)*1000);return 0}
+    function getStatus(){if(state.activePlayerType==='mp4')return els.mp4Player.paused?'paused':'playing';if(state.activePlayerType==='youtube'&&state.youtubePlayer?.getPlayerState){return state.youtubePlayer.getPlayerState()===window.YT?.PlayerState?.PLAYING?'playing':'paused'}return'paused'}
+    function driftMetric(target,actual){state.lastKnownDriftMs=Math.round(actual-target);els.driftValue.textContent=Math.abs(state.lastKnownDriftMs)+' ms';els.driftValue.style.color=Math.abs(state.lastKnownDriftMs)<=100?'var(--ok)':'var(--warn)'}
+    function renderQueue(queue,currentItem){const html=[];if(currentItem)html.push('<div class="card"><strong>Now Playing</strong><div class="line">'+esc(currentItem.title)+'</div><div class="line">Type: '+esc(currentItem.type)+'</div><div class="line">Added by '+esc(currentItem.addedBy||'Unknown')+'</div></div>');if(!queue.length)html.push('<div class="card"><strong>Queue is empty</strong><div class="line">Paste a media URL to add the next item.</div></div>');queue.forEach((item,index)=>html.push('<div class="card"><strong>#'+(index+1)+' '+esc(item.title)+'</strong><div class="line">Type: '+esc(item.type)+'</div><div class="line">Added by '+esc(item.addedBy||'Unknown')+'</div></div>'));els.queueList.innerHTML=html.join('')}
+    function renderMessage(msg){const item=document.createElement('div');item.className='bubble'+(msg.type==='system'?' system':'');const stamp=new Date(msg.timestamp||now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});item.innerHTML='<div class="bubble-head"><span>'+esc(msg.userName||'System')+'</span><span>'+esc(stamp)+'</span></div><div>'+esc(msg.text||'')+'</div>';els.chatFeed.appendChild(item);els.chatFeed.scrollTop=els.chatFeed.scrollHeight}
+    function renderChat(list){els.chatFeed.innerHTML='';(list||[]).forEach(renderMessage)}
+    async function ensureAudioReady(){try{if(!state.audioContext)state.audioContext=new (window.AudioContext||window.webkitAudioContext)();if(state.audioContext.state==='suspended')await state.audioContext.resume();return state.audioContext}catch(_){return null}}
+    async function pingChat(){const ctx=await ensureAudioReady();if(!ctx)return;const osc=ctx.createOscillator();const gain=ctx.createGain();osc.type='triangle';osc.frequency.value=920;gain.gain.value=.0001;osc.connect(gain);gain.connect(ctx.destination);const t=ctx.currentTime;gain.gain.exponentialRampToValueAtTime(.045,t+.015);gain.gain.exponentialRampToValueAtTime(.0001,t+.16);osc.start(t);osc.stop(t+.18)}
+    // Shared timeline rule:
+    // target playback position = server position + network transit time while playing.
+    // That lets each client compensate for packet delay and stay visually aligned.
+    function targetPos(positionMs,serverTs,status){if(status!=='playing')return Math.max(0,positionMs||0);return Math.max(0,(positionMs||0)+Math.max(0,now()-(serverTs||now())))}
+    function describeYoutubeError(code){if(code===2)return'YouTube rejected this video ID or URL.';if(code===5)return'This browser could not play the YouTube video.';if(code===100)return'This YouTube video is unavailable or was removed.';if(code===101||code===150)return'This YouTube video cannot be embedded, so it will not play inside the room.';return'This YouTube video could not be played inside the room.'}
+    function onYoutubeError(event){state.mediaIssue=describeYoutubeError(event?.data);updateMeta();badge('YouTube playback error','warn')}
+    async function ensureYoutube(){if(state.youtubePlayer&&state.youtubePlayerReady)return state.youtubePlayer;if(!state.youtubePlayerReadyPromise){state.youtubePlayerReadyPromise=new Promise((resolve)=>{const tick=()=>{if(state.youtubeReady&&window.YT?.Player){state.youtubePlayer=new window.YT.Player('youtubePlayer',{videoId:'',playerVars:{autoplay:0,controls:1,rel:0,modestbranding:1,playsinline:1,origin:location.origin},events:{onReady:()=>{state.youtubePlayerReady=true;resolve()},onStateChange:onYoutubeState,onError:onYoutubeError}})}else setTimeout(tick,50)};tick()})}await state.youtubePlayerReadyPromise;return state.youtubePlayer}
+    window.onYouTubeIframeAPIReady=function(){state.youtubeReady=true};
+    async function loadMedia(item,playback){state.currentItem=item||null;state.mediaIssue='';updateMeta();updateRole();if(!item){setPlayer(null);els.mp4Player.removeAttribute('src');els.mp4Player.load();if(state.youtubePlayer?.stopVideo)state.youtubePlayer.stopVideo();return}
+      if(item.type==='mp4'){setPlayer('mp4');state.suppressLocalSyncEvents=true;els.mp4Player.src=item.url;els.mp4Player.load();els.mp4Player.currentTime=(playback?.positionMs||0)/1000;state.suppressLocalSyncEvents=false;if(playback?.status==='playing'){try{await els.mp4Player.play()}catch(e){console.warn('Autoplay blocked for MP4.',e)}}return}
+      if(item.type==='youtube'){setPlayer('youtube');const player=await ensureYoutube();state.suppressLocalSyncEvents=true;player.loadVideoById({videoId:item.sourceId,startSeconds:(playback?.positionMs||0)/1000});if(playback?.status!=='playing'){setTimeout(()=>{try{player.pauseVideo()}catch(e){console.warn('Unable to pause YouTube player.',e)}finally{state.suppressLocalSyncEvents=false}},350)}else setTimeout(()=>{state.suppressLocalSyncEvents=false},350)}
+    }
+    async function applyRemoteAction(action){if(!state.currentItem||!action||state.lastAppliedActionId===action.actionId)return;state.lastAppliedActionId=action.actionId||null;const target=targetPos(action.positionMs,action.serverTs,action.status||action.type);const actual=getPos();driftMetric(target,actual);
+      if(state.activePlayerType==='mp4'){const t=target/1000;const drift=Math.abs((els.mp4Player.currentTime||0)-t);state.suppressLocalSyncEvents=true;if(action.type==='seek'||drift>.25)els.mp4Player.currentTime=t;if((action.status||action.type)==='playing'){try{await els.mp4Player.play()}catch(e){console.warn('Autoplay blocked while syncing MP4.',e)}}else els.mp4Player.pause();state.suppressLocalSyncEvents=false;return}
+      if(state.activePlayerType==='youtube'&&state.youtubePlayer){const drift=Math.abs((state.youtubePlayer.getCurrentTime?.()||0)-(target/1000));state.suppressLocalSyncEvents=true;if(action.type==='seek'||drift>.25)state.youtubePlayer.seekTo(target/1000,true);if((action.status||action.type)==='playing')state.youtubePlayer.playVideo();else state.youtubePlayer.pauseVideo();setTimeout(()=>{state.suppressLocalSyncEvents=false},120)}
+    }
+    function emitSync(type,positionMs){if(!state.socket||!state.isHost||!state.currentItem)return;state.socket.emit('sync:action',{type,positionMs,actionId:actionId(type)})}
+    function onYoutubeState(event){if(!state.isHost||state.suppressLocalSyncEvents||!state.currentItem)return;const S=window.YT?.PlayerState;const pos=getPos();if(event.data===S.PLAYING)emitSync('play',pos);else if(event.data===S.PAUSED)emitSync('pause',pos);else if(event.data===S.ENDED)emitSync('ended',pos)}
+    function attachMp4(){els.mp4Player.addEventListener('play',()=>{if(state.isHost&&!state.suppressLocalSyncEvents)emitSync('play',getPos())});els.mp4Player.addEventListener('pause',()=>{if(state.isHost&&!state.suppressLocalSyncEvents)emitSync('pause',getPos())});els.mp4Player.addEventListener('seeked',()=>{if(state.isHost&&!state.suppressLocalSyncEvents)emitSync('seek',getPos())});els.mp4Player.addEventListener('ended',()=>{if(state.isHost&&!state.suppressLocalSyncEvents)emitSync('ended',getPos())})}
+    // The host emits a heartbeat every 1.5s while playing so viewers can self-correct before drift becomes visible.
+    function startHeartbeat(){clearInterval(state.syncHeartbeatInterval);state.syncHeartbeatInterval=setInterval(()=>{if(!state.isHost||!state.currentItem||getStatus()!=='playing')return;state.socket.emit('sync:action',{type:'heartbeat',positionMs:getPos(),actionId:actionId('heartbeat')})},1500)}
+    // Viewers only hard-seek when the drift is meaningful; smaller errors are allowed to avoid jittery playback.
+    function startDriftChecks(){clearInterval(state.driftCheckInterval);state.driftCheckInterval=setInterval(()=>{if(!state.room?.playback||!state.currentItem||state.isHost)return;const target=targetPos(state.room.playback.positionMs,state.room.playback.updatedAt,state.room.playback.status);const actual=getPos();driftMetric(target,actual);if(Math.abs(actual-target)>350){applyRemoteAction({type:'seek',status:state.room.playback.status,positionMs:state.room.playback.positionMs,serverTs:state.room.playback.updatedAt,actionId:actionId('drift-fix')})}},2000)}
+    function syncRoom(roomState){const previousItemId=state.currentItem?.id||null;state.room=roomState;state.currentItem=roomState.currentItem||null;state.isHost=roomState.hostSocketId===state.selfSocketId;(roomState.users||[]).forEach((u)=>state.participantNames.set(u.socketId,u.name));updateRole();updateCounts();updateMeta();renderQueue(roomState.queue||[],roomState.currentItem||null);const nextItemId=roomState.currentItem?.id||null;if(previousItemId!==nextItemId||(!state.activePlayerType&&nextItemId))loadMedia(roomState.currentItem||null,roomState.playback||null);if(state.localStream){for(const user of (roomState.users||[])){if(user.socketId!==state.selfSocketId&&!state.peerConnections.has(user.socketId))makeOffer(user.socketId)}}renderParticipants();startHeartbeat();startDriftChecks()}
+    function tile(socketId,label,stream,muted){const wrap=document.createElement('div');wrap.className='tile';wrap.dataset.socketId=socketId;const video=document.createElement('video');video.autoplay=true;video.playsInline=true;video.muted=muted;if(stream)video.srcObject=stream;const meta=document.createElement('div');meta.className='tag';meta.innerHTML='<span>'+esc(label)+'</span><span>'+(socketId===state.room?.hostSocketId?'Host':'Guest')+'</span>';wrap.appendChild(video);wrap.appendChild(meta);return wrap}
+    function renderParticipants(){els.participantGrid.innerHTML='';if(state.localStream){const name=state.videoDisplayName||state.userName||'You';els.participantGrid.appendChild(tile('local',name+' (You)',state.localStream,true))}state.remoteStreams.forEach((stream,socketId)=>{els.participantGrid.appendChild(tile(socketId,state.participantNames.get(socketId)||'Guest',stream,false))})}
+    async function renegotiatePeer(targetSocketId){const pc=state.peerConnections.get(targetSocketId);if(!pc||targetSocketId===state.selfSocketId||pc.signalingState!=='stable')return;const offer=await pc.createOffer();await pc.setLocalDescription(offer);state.socket.emit('webrtc:offer',{targetSocketId,sdp:offer})}
+    async function enableCamera(){if(state.localStream)return state.localStream;const stream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});state.localStream=stream;updateCameraButtons();renderParticipants();for(const pc of state.peerConnections.values()){for(const track of stream.getTracks()){if(!pc.getSenders().some((sender)=>sender.track&&sender.track.id===track.id))pc.addTrack(track,stream)}}return stream}
+    async function disableCamera(){if(!state.localStream)return;const stream=state.localStream;state.localStream=null;stream.getTracks().forEach((track)=>track.stop());for(const [socketId,pc] of state.peerConnections){pc.getSenders().forEach((sender)=>{if(sender.track){try{pc.removeTrack(sender)}catch(_){}}});await renegotiatePeer(socketId)}updateCameraButtons();renderParticipants()}
+    function peer(targetSocketId){if(state.peerConnections.has(targetSocketId))return state.peerConnections.get(targetSocketId);const pc=new RTCPeerConnection(rtcConfig);if(state.localStream)state.localStream.getTracks().forEach((track)=>pc.addTrack(track,state.localStream));pc.onicecandidate=(e)=>{if(e.candidate)state.socket.emit('webrtc:ice-candidate',{targetSocketId,candidate:e.candidate})};pc.ontrack=(e)=>{const [stream]=e.streams;if(stream){state.remoteStreams.set(targetSocketId,stream);renderParticipants()}};pc.onconnectionstatechange=()=>{if(['disconnected','failed','closed'].includes(pc.connectionState)){state.peerConnections.delete(targetSocketId);state.remoteStreams.delete(targetSocketId);renderParticipants()}};state.peerConnections.set(targetSocketId,pc);return pc}
+    async function makeOffer(targetSocketId){if(!state.localStream||targetSocketId===state.selfSocketId)return;const pc=peer(targetSocketId);const offer=await pc.createOffer();await pc.setLocalDescription(offer);state.socket.emit('webrtc:offer',{targetSocketId,sdp:offer})}
+    async function onOffer(fromSocketId,sdp){const pc=peer(fromSocketId);await pc.setRemoteDescription(new RTCSessionDescription(sdp));const answer=await pc.createAnswer();await pc.setLocalDescription(answer);state.socket.emit('webrtc:answer',{targetSocketId:fromSocketId,sdp:answer})}
+    async function onAnswer(fromSocketId,sdp){const pc=state.peerConnections.get(fromSocketId);if(pc)await pc.setRemoteDescription(new RTCSessionDescription(sdp))}
+    async function onCandidate(fromSocketId,candidate){const pc=peer(fromSocketId);await pc.addIceCandidate(new RTCIceCandidate(candidate))}
+    function removePeer(socketId){state.peerConnections.get(socketId)?.close();state.peerConnections.delete(socketId);state.remoteStreams.delete(socketId);state.participantNames.delete(socketId);renderParticipants()}
+    function bindUi(){
+      restoreSession();
+      els.joinBtn.addEventListener('click',async()=>{await joinRoom()});
+      els.shareRoomBtn.addEventListener('click',async()=>{await shareRoom()});
+      els.addQueueBtn.addEventListener('click',()=>{const url=els.mediaUrlInput.value.trim();if(!url)return;state.socket.emit('queue:add',{url},(res)=>{if(!res?.ok){alert(res?.error||'Unable to add media.');return}els.mediaUrlInput.value=''})});
+      els.chatBtn.addEventListener('click',async()=>{await ensureAudioReady();const text=els.chatInput.value.trim();if(!text)return;state.socket.emit('chat:send',{text});els.chatInput.value=''});
+      els.chatInput.addEventListener('keydown',(e)=>{if(e.key==='Enter')els.chatBtn.click()});
+      els.playBtn.addEventListener('click',async()=>{if(!state.isHost||!state.currentItem)return;if(state.activePlayerType==='mp4')await els.mp4Player.play();else if(state.activePlayerType==='youtube')state.youtubePlayer?.playVideo()});
+      els.pauseBtn.addEventListener('click',()=>{if(!state.isHost||!state.currentItem)return;if(state.activePlayerType==='mp4')els.mp4Player.pause();else if(state.activePlayerType==='youtube')state.youtubePlayer?.pauseVideo()});
+      els.seekBackBtn.addEventListener('click',()=>{if(!state.isHost||!state.currentItem)return;const nextMs=Math.max(0,getPos()-10000);if(state.activePlayerType==='mp4')els.mp4Player.currentTime=nextMs/1000;else if(state.activePlayerType==='youtube'){state.youtubePlayer?.seekTo(nextMs/1000,true);emitSync('seek',nextMs)}});
+      els.skipBtn.addEventListener('click',()=>{if(!state.isHost)return;state.socket.emit('queue:next',(res)=>{if(!res?.ok)alert(res?.error||'Unable to skip.')})});
+      els.focusViewBtn.addEventListener('click',()=>{state.focusMode=!state.focusMode;updateFocusMode()});
+      els.cameraBtn.addEventListener('click',async()=>{try{await ensureAudioReady();await enableCamera();for(const user of (state.room?.users||[])){if(user.socketId!==state.selfSocketId)await renegotiatePeer(user.socketId);if(user.socketId!==state.selfSocketId&&!state.peerConnections.has(user.socketId))await makeOffer(user.socketId)}}catch(e){console.error(e);alert('Unable to access camera or microphone.')}})
+      els.cameraOffBtn.addEventListener('click',async()=>{try{await disableCamera()}catch(e){console.error(e);alert('Unable to turn off camera.')}})
+    }
+    function bindSocket(){
+      state.socket.on('connect',()=>{badge('Connected','warn');if(els.nameInput.value.trim()||readSession().userName)joinRoom()});
+      state.socket.on('disconnect',()=>{state.joinInFlight=false;badge(state.roomId?'Reconnecting to '+state.roomId+'...':'Disconnected','warn')});
+      state.socket.on('room:state',(roomState)=>syncRoom(roomState));
+      state.socket.on('chat:new',async(msg)=>{renderMessage(msg);if(msg.type==='user'&&msg.socketId!==state.selfSocketId)await pingChat()});
+      state.socket.on('host:changed',({hostSocketId})=>{if(!state.room)return;state.room.hostSocketId=hostSocketId;state.isHost=hostSocketId===state.selfSocketId;updateRole()});
+      state.socket.on('media:load',async({currentItem,playback,queue})=>{if(state.room){state.room.currentItem=currentItem;state.room.playback=playback;state.room.queue=queue}renderQueue(queue||[],currentItem||null);await loadMedia(currentItem,playback)});
+      state.socket.on('sync:action',async(action)=>{if(state.isHost&&action.type!=='heartbeat')return;if(state.room?.playback){state.room.playback.status=action.status||state.room.playback.status;state.room.playback.positionMs=action.positionMs;state.room.playback.updatedAt=action.serverTs}await applyRemoteAction(action)});
+      state.socket.on('webrtc:offer',async({fromSocketId,sdp})=>{try{await onOffer(fromSocketId,sdp)}catch(e){console.error('Failed to answer WebRTC offer.',e)}});
+      state.socket.on('webrtc:answer',async({fromSocketId,sdp})=>{await onAnswer(fromSocketId,sdp)});
+      state.socket.on('webrtc:ice-candidate',async({fromSocketId,candidate})=>{await onCandidate(fromSocketId,candidate)});
+      state.socket.on('peer:left',({socketId})=>removePeer(socketId));
+    }
+    function init(){state.socket=io({transports:['websocket','polling']});bindUi();bindSocket();attachMp4();updateCameraButtons();updateFocusMode();document.addEventListener('pointerdown',()=>{ensureAudioReady()},{once:true});badge('Ready to connect','default')}
+    init();
+  </script>
+</body>
+</html>
